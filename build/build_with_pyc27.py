@@ -11,6 +11,7 @@ import shutil
 # Configuration
 SRC_DIR = "../src"
 OUTPUT_DIR = "../output"
+GAME_MODS_DIR = "e:\\Wargaming.net\\WorldOfTanks\\mods\\2.1.0.1"
 MOD_NAME = "mod_winchance.wotmod"
 BASE_INTERNAL_PATH = "res/scripts/client/gui/mods"
 
@@ -150,6 +151,23 @@ def build_wotmod(compiled_files):
     print("  2. Launch WoT")
     print("  3. Check python.log for errors")
     print("=" * 70)
+    
+    # Auto-copy to game mods directory
+    try:
+        dest_path = os.path.join(GAME_MODS_DIR, MOD_NAME)
+        shutil.copy(mod_path, dest_path)
+        print("\nAuto-copied to: %s" % dest_path)
+    except Exception as e:
+        print("\nWarning: Could not copy to game directory: %s" % str(e))
+    
+    # Delete old python.log
+    try:
+        log_path = "e:\\Wargaming.net\\WorldOfTanks\\python.log"
+        if os.path.exists(log_path):
+            os.remove(log_path)
+            print("Deleted old python.log")
+    except Exception as e:
+        print("Warning: Could not delete python.log: %s" % str(e))
     
     return True
 
